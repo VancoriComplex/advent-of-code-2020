@@ -13,7 +13,7 @@ public class TestAdvent {
             e.printStackTrace();
         }
         assert input != null;
-        Integer result = Day1.Part2.processExpenseReport(input, 2020);
+        Integer result = Day1.Part1.processExpenseReport(input, 2020);
         System.out.println(result);
     }
 }
