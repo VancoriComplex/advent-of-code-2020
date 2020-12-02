@@ -1,15 +1,15 @@
 package day1;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class Day1 {
 
     public static class Part1 {
         public static int processExpenseReport(String input, Integer expectedSum) {
             int[] inputNumbers = Arrays.stream(input.split(" ")).mapToInt(Integer::parseInt).toArray();
-            Set<Integer> numbersCacheSet = new TreeSet<>();
+            Set<Integer> numbersCacheSet = new HashSet<>();
 
             for (int i = 0; i < inputNumbers.length; i++) {
                 int neededNumber = expectedSum - inputNumbers[i];
@@ -26,7 +26,7 @@ public class Day1 {
         public static int processExpenseReport(String input, Integer expectedSum) {
 
             int[] numbers = Arrays.stream(input.split(" ")).mapToInt(Integer::parseInt).toArray();
-            Set<Integer> numbersCacheSet = new TreeSet<>();
+            Set<Integer> numbersCacheSet = new HashSet<>();
 
             for (int i = 0; i < numbers.length; i++) {
                 for (int j = i + 1; j < numbers.length; j++) {

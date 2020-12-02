@@ -1,4 +1,5 @@
 import day1.Day1;
+import day2.Day2;
 import util.HttpsReader;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ public class TestAdvent {
             e.printStackTrace();
         }
         assert input != null;
-        Integer result = Day1.Part1.processExpenseReport(input, 2020);
+        Integer result = Day2.Part2.getValidPasswordsCount(input);
         System.out.println(result);
     }
 }

@@ -14,8 +14,9 @@ public class HttpsReader {
         InputStream inputStream = connection.getInputStream();
         Scanner scanner = new Scanner(inputStream);
         StringBuilder builder = new StringBuilder();
-        while (scanner.hasNext())
-            builder.append(scanner.next()).append(" ");
+        while (scanner.hasNextLine())
+            builder.append(scanner.nextLine()).append("\n");
+        System.out.println(builder.toString());
         return builder.toString();
     }
 }
