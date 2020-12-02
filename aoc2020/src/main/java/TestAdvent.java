@@ -4,10 +4,11 @@ import util.HttpsReader;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 public class TestAdvent {
     public static void main(String[] args) {
-        String input = null;
+        List<String> input = null;
         try {
             input = HttpsReader.getContent(new URL("someUrl"), "sessionKey");
         } catch (IOException e) {
