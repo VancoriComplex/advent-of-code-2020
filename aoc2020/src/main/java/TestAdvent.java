@@ -1,5 +1,4 @@
-import day1.Day1;
-import day2.Day2;
+import day3.Day3;
 import util.HttpsReader;
 
 import java.io.IOException;
@@ -15,7 +14,8 @@ public class TestAdvent {
             e.printStackTrace();
         }
         assert input != null;
-        Integer result = Day2.Part2.getValidPasswordsCount(input);
+        int[][] offsets = new int[][] {{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}};
+        Long result = Day3.Part2.getTreesMultiplied(input, offsets);
         System.out.println(result);
     }
 }
