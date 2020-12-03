@@ -6,24 +6,24 @@ public class Day3 {
 
     public static class Part1 {
         public static int getTreesCount(
-                List<String> input,
+                List<String> slope,
                 int offsetRight,
                 int offsetDown)
         {
             int treesCount = 0;
-            int currentRowPosition = 0;
-            int rowLength = input.get(0).length() - 1;
+            int slopePosition = 0;
+            int slopeWidth = slope.get(0).length() - 1;
 
             for (int i = 0;
-                 i < input.size() - offsetDown;
+                 i < slope.size() - offsetDown;
                  i += offsetDown) {
-                if (currentRowPosition > rowLength - offsetRight)
-                    currentRowPosition = currentRowPosition - rowLength - 1;
-                if (input.get(i + offsetDown)
-                        .charAt(currentRowPosition
+                if (slopePosition > slopeWidth - offsetRight)
+                    slopePosition = slopePosition - slopeWidth - 1;
+                if (slope.get(i + offsetDown)
+                        .charAt(slopePosition
                                 + offsetRight) == '#')
                     treesCount++;
-                currentRowPosition += offsetRight;
+                slopePosition += offsetRight;
             }
             return treesCount;
         }
@@ -31,13 +31,13 @@ public class Day3 {
 
     public static class Part2 {
         public static long getTreesMultiplied(
-                List<String> input,
+                List<String> slope,
                 int[][] offsets)
         {
             long treesMultiplied = 1;
 
             for (int[] offset : offsets)
-                treesMultiplied *= Part1.getTreesCount(input, offset[0], offset[1]);
+                treesMultiplied *= Part1.getTreesCount(slope, offset[0], offset[1]);
 
             return treesMultiplied;
         }
