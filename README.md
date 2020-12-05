@@ -1,3 +1,3 @@
 # advent-of-code-2020
 
-*mostly naive logarithms*
+*mostly naive algorithms*
