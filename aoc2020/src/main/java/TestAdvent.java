@@ -1,4 +1,5 @@
 import day5.Day5;
+import day6.Day6;
 import util.HttpsReader;
 
 import java.io.IOException;
@@ -6,6 +7,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static java.lang.System.out;
 
 public class TestAdvent {
     public static void main(String[] args) {
@@ -16,8 +19,8 @@ public class TestAdvent {
             e.printStackTrace();
         }
         assert input != null;
-        List<String> test = new ArrayList<>(Arrays.asList("FBFBBFFRLR"));
-        int result = Day5.Part1.getHighestBoardingPassId(input);
-        System.out.println(result);
+        List<String> test = new ArrayList<>(Arrays.asList("abc", "xyz", "a"));
+        int result = Day6.Part2.getAnswersCount(input);
+        out.println(result);
     }
 }

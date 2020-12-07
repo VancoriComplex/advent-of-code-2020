@@ -10,7 +10,10 @@ import java.util.Scanner;
 
 public class HttpsReader {
 
-    public static List<String> getContent(URL input, String sessionKey) throws IOException {
+    public static List<String> getContent(URL input,
+                                          String sessionKey)
+            throws IOException
+    {
         HttpsURLConnection connection = (HttpsURLConnection) input.openConnection();
         connection.setRequestProperty("Cookie", sessionKey);
         InputStream inputStream = connection.getInputStream();
