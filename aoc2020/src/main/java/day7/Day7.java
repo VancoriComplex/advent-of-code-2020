@@ -43,41 +43,20 @@ public class Day7 {
     public static class Part2 {
 
         private static final Bag neededBag = new Bag("shiny gold", 1);
-        private static final Map<String, Set<Bag>> regulations = new HashMap<>();
-        private static final Map<Integer, Integer> levelCapacityMap = new HashMap<>();
-        private static int totalCapacity = 0;
-        private static int level = 0;
 
         public static int getBagCapacity(List<String> input) {
-            readRegulations(input);
-            readCapacityRecursive(regulations.get(neededBag), neededBag.getQuantity());
-            calculateTotalCapacity();
-            return totalCapacity;
+            Map<String, Set<Bag>> regulations = Part1.readRegulations(input);
+            return calculateTotalCapacity(neededBag.getName(), regulations) - neededBag.getQuantity();
         }
 
-        private static void readRegulations(List<String> input) {
-            BagReader bagReader = new BagReader();
-            for (String regulation : input) {
-                regulations.put(bagReader.parseName(regulation), bagReader.parseChildren(regulation));
-            }
-        }
-
-        private static void readCapacityRecursive(Set<Bag> children, Integer parentsQty) {
-            level++;
-            if (!levelCapacityMap.containsKey(level))
-                levelCapacityMap.put(level, 0);
-            if (!children.isEmpty()) {
-                children.forEach(child -> {
-                    int childQty = child.getQuantity()*parentsQty;
-                    readCapacityRecursive(regulations.get(child), childQty);
-                    levelCapacityMap.put(level, levelCapacityMap.get(level) + childQty);
-                    level--;
-                });
-            }
-        }
-
-        private static void calculateTotalCapacity() {
-            levelCapacityMap.values().forEach(levelCapacity -> totalCapacity += levelCapacity);
+        private static int calculateTotalCapacity(String parent, Map<String, Set<Bag>> regulations) {
+            int result = neededBag.getQuantity();
+            result += regulations.get(parent)
+                    .stream()
+                    .mapToInt(child ->
+                            child.getQuantity()*calculateTotalCapacity(child.getName(), regulations))
+                    .sum();
+            return result;
         }
     }
 }

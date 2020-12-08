@@ -13,7 +13,7 @@ public class TestAdvent {
     public static void main(String[] args) {
         List<String> input = null;
         try {
-            input = HttpsReader.getContent(new URL("https://adventofcode.com/2020/day/7/input"), "session=53616c7465645f5f11e0326ea0869d5ba95967b4a6efafe7ef87d296b656377ec5d6f3c505b7ac374c827b37d6cf1609");
+            input = HttpsReader.getContent(new URL("someUrl"), "sessionKey");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,7 +34,7 @@ public class TestAdvent {
                 "dark green bags contain 2 dark blue bags.",
                 "dark blue bags contain 2 dark violet bags.",
                 "dark violet bags contain no other bags."));
-        long result = Day7.Part1.getValidBagsCount(input);
+        long result = Day7.Part2.getBagCapacity(input);
         out.println(result);
     }
 }
