@@ -1,28 +1,19 @@
 package day7;
 
-import java.util.Collections;
-import java.util.Set;
+import java.util.Objects;
 
 class Bag {
 
     private String name;
     private int quantity;
-    private Set<Bag> children;
 
     Bag(String name) {
         this.name = name;
-        children = Collections.emptySet();
     }
 
     Bag(String name, Integer quantity) {
         this.name = name;
         this.quantity = quantity;
-        children = Collections.emptySet();
-    }
-
-    Bag(String name, Set<Bag> children) {
-        this.name = name;
-        this.children = children;
     }
 
     @Override
@@ -33,7 +24,7 @@ class Bag {
 
     @Override
     public int hashCode() {
-        return 1;
+        return Objects.hash(name);
     }
 
     @Override
@@ -41,12 +32,12 @@ class Bag {
         return String.format("%d x %s", quantity, name);
     }
 
-    Integer getQuantity() {
-        return quantity;
+    public String getName() {
+        return name;
     }
 
-    Set<Bag> getChildren() {
-        return children;
+    Integer getQuantity() {
+        return quantity;
     }
 
 }

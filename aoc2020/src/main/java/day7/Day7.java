@@ -6,44 +6,44 @@ public class Day7 {
 
     public static class Part1 {
 
-        private static final Bag neededBag = new Bag("shiny gold");
-        private static final Map<Bag, Set<Bag>> regulations = new HashMap<>();
-        private static int validBagsCount = 0;
-        private static boolean bagFound;
+        private static Bag neededBag = new Bag("shiny gold");
 
         public static int getValidBagsCount(List<String> input) {
-            readRegulations(input);
-            for (Bag bag : regulations.keySet()) {
-                bagFound = false;
-                countValidBagsRecursive(regulations.get(bag));
+            Map<String, Set<Bag>> regulations = readRegulations(input);
+            int validBagsCount = 0;
+            for (String parent : regulations.keySet()) {
+                if (isValidBag(parent, regulations))
+                    validBagsCount++;
             }
             return validBagsCount;
         }
 
-        private static void readRegulations(List<String> input) {
+        private static Map<String, Set<Bag>> readRegulations(List<String> input) {
+            Map<String, Set<Bag>> regulations = new HashMap<>();
             BagReader bagReader = new BagReader();
             for (String regulation : input) {
-                Bag newBag = bagReader.parseBag(regulation);
-                regulations.put(newBag, newBag.getChildren());
+                regulations.put(bagReader.parseName(regulation),
+                        bagReader.parseChildren(regulation));
             }
+            return regulations;
         }
 
-        private static void countValidBagsRecursive(Set<Bag> bags) {
-            if (!bags.isEmpty() && !bagFound) {
-                if (bags.contains(neededBag)) {
-                    bagFound = true;
-                    validBagsCount++;
-                } else {
-                    bags.forEach(bag -> countValidBagsRecursive(regulations.get(bag)));
-                }
+        private static boolean isValidBag(String parent, Map<String, Set<Bag>> regulations) {
+            if (regulations.get(parent).contains(neededBag)) {
+                return true;
             }
+            for (Bag child : regulations.get(parent)) {
+                if (isValidBag(child.getName(), regulations))
+                    return true;
+            }
+            return false;
         }
     }
 
     public static class Part2 {
 
         private static final Bag neededBag = new Bag("shiny gold", 1);
-        private static final Map<Bag, Set<Bag>> regulations = new HashMap<>();
+        private static final Map<String, Set<Bag>> regulations = new HashMap<>();
         private static final Map<Integer, Integer> levelCapacityMap = new HashMap<>();
         private static int totalCapacity = 0;
         private static int level = 0;
@@ -58,8 +58,7 @@ public class Day7 {
         private static void readRegulations(List<String> input) {
             BagReader bagReader = new BagReader();
             for (String regulation : input) {
-                Bag newBag = bagReader.parseBag(regulation);
-                regulations.put(newBag, newBag.getChildren());
+                regulations.put(bagReader.parseName(regulation), bagReader.parseChildren(regulation));
             }
         }
 
