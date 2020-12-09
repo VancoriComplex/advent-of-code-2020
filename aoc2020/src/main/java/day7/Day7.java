@@ -9,7 +9,7 @@ public class Day7 {
         private static Bag neededBag = new Bag("shiny gold");
 
         public static int getValidBagsCount(List<String> input) {
-            Map<String, Set<Bag>> regulations = readRegulations(input);
+            BagMap<String, Set<Bag>> regulations = readRegulations(input);
             int validBagsCount = 0;
             for (String parent : regulations.keySet()) {
                 if (isValidBag(parent, regulations))
@@ -18,17 +18,16 @@ public class Day7 {
             return validBagsCount;
         }
 
-        private static Map<String, Set<Bag>> readRegulations(List<String> input) {
-            Map<String, Set<Bag>> regulations = new HashMap<>();
+        private static BagMap<String, Set<Bag>> readRegulations(List<String> input) {
+            BagMap<String, Set<Bag>> regulations = new BagHashMap<>();
             BagReader bagReader = new BagReader();
             for (String regulation : input) {
-                regulations.put(bagReader.parseName(regulation),
-                        bagReader.parseChildren(regulation));
+                regulations.put(bagReader.parseBag(regulation));
             }
             return regulations;
         }
 
-        private static boolean isValidBag(String parent, Map<String, Set<Bag>> regulations) {
+        private static boolean isValidBag(String parent, BagMap<String, Set<Bag>> regulations) {
             if (regulations.get(parent).contains(neededBag)) {
                 return true;
             }
@@ -45,11 +44,11 @@ public class Day7 {
         private static final Bag neededBag = new Bag("shiny gold", 1);
 
         public static int getBagCapacity(List<String> input) {
-            Map<String, Set<Bag>> regulations = Part1.readRegulations(input);
+            BagMap<String, Set<Bag>> regulations = Part1.readRegulations(input);
             return calculateTotalCapacity(neededBag.getName(), regulations) - neededBag.getQuantity();
         }
 
-        private static int calculateTotalCapacity(String parent, Map<String, Set<Bag>> regulations) {
+        private static int calculateTotalCapacity(String parent, BagMap<String, Set<Bag>> regulations) {
             int result = neededBag.getQuantity();
             result += regulations.get(parent)
                     .stream()

@@ -4,11 +4,19 @@ import java.util.*;
 
 class BagReader {
 
-    public String parseName(String input) {
+    public Map.Entry<String, Set<Bag>> parseBag(String input) {
+        return newBagEntry(parseName(input), parseChildren(input));
+    }
+
+    private <K,V>Map.Entry<K,V> newBagEntry(K key, V value) {
+        return new AbstractMap.SimpleEntry<>(key, value);
+    }
+
+    private String parseName(String input) {
         return input.split(" bags contain ")[0];
     }
 
-    public Set<Bag> parseChildren(String input) {
+    private Set<Bag> parseChildren(String input) {
         Set<Bag> result = new HashSet<>();
         String[] childrenToParse = input.split(" bags contain ")[1].split("\\s+bag([s]?)+[,.]+(\\s)?");
         if (childrenToParse[0].equals("no other"))
