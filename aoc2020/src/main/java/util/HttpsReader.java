@@ -23,4 +23,18 @@ public class HttpsReader {
             content.add(scanner.nextLine());
         return content;
     }
+
+    public static List<Long> getContentAsLong(URL input,
+                                                 String sessionKey)
+            throws IOException
+    {
+        HttpsURLConnection connection = (HttpsURLConnection) input.openConnection();
+        connection.setRequestProperty("Cookie", sessionKey);
+        InputStream inputStream = connection.getInputStream();
+        Scanner scanner = new Scanner(inputStream);
+        List<Long> content = new ArrayList<>();
+        while (scanner.hasNextLine())
+            content.add(Long.parseLong(scanner.nextLine()));
+        return content;
+    }
 }
