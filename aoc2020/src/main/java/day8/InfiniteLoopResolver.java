@@ -17,22 +17,11 @@ class InfiniteLoopResolver implements Interpreter {
         Set<Instruction> visited = new HashSet<>();
         while (i < code.size()) {
             Instruction instruction = code.get(i);
-            System.out.format("index: %d instruction: %s\n", i, instruction);
             if (visited.contains(instruction))
                 return accumulator;
-            else
-                visited.add(instruction);
-            switch (instruction.getOperation()) {
-                case ACCUMULATE:
-                    accumulator += instruction.getArgument();
-                    break;
-                case JUMP:
-                    i += instruction.getArgument();
-                    continue;
-                case NO_OPERATION:
-                    break;
-            }
-            i++;
+            visited.add(instruction);
+            accumulator = instruction.calculateAccumulator(accumulator);
+            i = instruction.calculateOffset(i);
         }
         return accumulator;
     }

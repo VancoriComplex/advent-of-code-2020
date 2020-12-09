@@ -21,10 +21,6 @@ enum Operation {
         return BY_CODE.get(code);
     }
 
-    public String code() {
-        return code;
-    }
-
     Operation(String code) {
         this.code = code;
     }

@@ -29,17 +29,8 @@ class CorruptedOperationResolver implements Interpreter {
                 continue;
             }
             visited.add(instruction);
-            switch (instruction.getOperation()) {
-                case ACCUMULATE:
-                    accumulator += instruction.getArgument();
-                    break;
-                case JUMP:
-                    index += instruction.getArgument();
-                    continue;
-                case NO_OPERATION:
-                    break;
-            }
-            index++;
+            accumulator = instruction.calculateAccumulator(accumulator);
+            index = instruction.calculateOffset(index);
         }
         return accumulator;
     }
@@ -54,18 +45,18 @@ class CorruptedOperationResolver implements Interpreter {
         return -1;
     }
 
-    private Map<Integer, Instruction> switchOperation(int potentiallyCorrupted, Map<Integer, Instruction> bootCode) {
-        Instruction toSwitch = bootCode.get(potentiallyCorrupted);
+    private Map<Integer, Instruction> switchOperation(int potentiallyCorrupted, Map<Integer, Instruction> code) {
+        Instruction toSwitch = code.get(potentiallyCorrupted);
         switch (toSwitch.getOperation()) {
             case JUMP:
                 toSwitch.setOperation(Operation.NO_OPERATION);
-                bootCode.put(potentiallyCorrupted, toSwitch);
-                return bootCode;
+                code.put(potentiallyCorrupted, toSwitch);
+                return code;
             case NO_OPERATION:
                 toSwitch.setOperation(Operation.JUMP);
-                bootCode.put(potentiallyCorrupted, toSwitch);
-                return bootCode;
+                code.put(potentiallyCorrupted, toSwitch);
+                return code;
         }
-        return bootCode;
+        return code;
     }
 }
