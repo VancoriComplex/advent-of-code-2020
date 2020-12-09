@@ -11,12 +11,12 @@ public class TestAdvent {
     public static void main(String[] args) {
         List<String> input = null;
         try {
-            input = HttpsReader.getContent(new URL("someUrl"), "session");
+            input = HttpsReader.getContent(new URL("someUrl"), "session=Key");
         } catch (IOException e) {
             e.printStackTrace();
         }
         assert input != null;
-        int result = Day8.Part1.processInput(input);
+        int result = Day8.Part2.processInput(input);
         out.println(result);
     }
 }

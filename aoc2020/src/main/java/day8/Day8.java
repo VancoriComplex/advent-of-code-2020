@@ -6,21 +6,24 @@ import java.util.Map;
 public class Day8 {
 
     private static InstructionReader reader = new InstructionReader();
-    private static Interpreter interpreter = new Interpreter();
 
     public static class Part1 {
 
+        private static Interpreter infiniteLoopResolver = new InfiniteLoopResolver();
+
         public static int processInput(List<String> input) {
             Map<Integer, Instruction> bootCode = reader.parseCode(input);
-            return interpreter.resolveInfiniteLoop(bootCode);
+            return infiniteLoopResolver.run(bootCode);
         }
     }
 
     public static class Part2 {
 
+        private static Interpreter corruptionResolver = new CorruptedOperationResolver();
+
         public static int processInput(List<String> input) {
             Map<Integer, Instruction> bootCode = reader.parseCode(input);
-            return interpreter.resolveCorruptedInstruction(bootCode);
+            return corruptionResolver.run(bootCode);
         }
     }
 }

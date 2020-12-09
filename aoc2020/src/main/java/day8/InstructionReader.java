@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class InstructionReader {
+class InstructionReader implements CodeParser {
 
+    @Override
     public Map<Integer, Instruction> parseCode(List<String> input) {
         Map<Integer, Instruction> result = new HashMap<>();
         for (int i = 0; i < input.size(); i++) {

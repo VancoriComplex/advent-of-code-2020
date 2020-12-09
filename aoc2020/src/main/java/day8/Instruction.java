@@ -10,6 +10,10 @@ class Instruction {
         this.argument = argument;
     }
 
+    public void setOperation(Operation operation) {
+        this.operation = operation;
+    }
+
     public Operation getOperation() {
         return operation;
     }
