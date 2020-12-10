@@ -1,9 +1,9 @@
-package day8;
+package day8.instruction;
 
 import java.util.HashMap;
 import java.util.Map;
 
-enum Operation {
+public enum Operation {
     ACCUMULATE("acc"),
     JUMP("jmp"),
     NO_OPERATION("nop");
@@ -23,5 +23,9 @@ enum Operation {
 
     Operation(String code) {
         this.code = code;
+    }
+
+    public String getCode() {
+        return code;
     }
 }

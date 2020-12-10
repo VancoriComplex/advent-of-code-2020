@@ -1,28 +1,35 @@
 package day8;
 
+import day8.executor.Executor;
+import day8.instruction.Instruction;
+import day8.instruction.InstructionReader;
+import day8.resolver.CorruptedOperationResolver;
+import day8.resolver.InfiniteLoopResolver;
+import day8.resolver.Resolver;
+
 import java.util.List;
-import java.util.Map;
 
 public class Day8 {
 
-    private static InstructionReader reader = new InstructionReader();
-
     public static class Part1 {
 
-        private static Interpreter infiniteLoopResolver = new InfiniteLoopResolver();
-
         public static int processInput(List<String> input) {
-            Map<Integer, Instruction> bootCode = reader.parseCode(input);
+            Executor executor = new Executor();
+            Resolver infiniteLoopResolver = new InfiniteLoopResolver(executor);
+            InstructionReader reader = new InstructionReader();
+            List<Instruction> bootCode = reader.parseCode(input);
             return infiniteLoopResolver.run(bootCode);
         }
     }
 
     public static class Part2 {
 
-        private static Interpreter corruptionResolver = new CorruptedOperationResolver();
 
         public static int processInput(List<String> input) {
-            Map<Integer, Instruction> bootCode = reader.parseCode(input);
+            Executor executor = new Executor();
+            Resolver corruptionResolver = new CorruptedOperationResolver(executor);
+            InstructionReader reader = new InstructionReader();
+            List<Instruction> bootCode = reader.parseCode(input);
             return corruptionResolver.run(bootCode);
         }
     }
