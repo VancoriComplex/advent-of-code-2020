@@ -1,24 +1,22 @@
-import day8.Day8;
-import day9.Day9;
+import day10.Day10;
 import util.HttpsReader;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.System.out;
 
 public class TestAdvent {
     public static void main(String[] args) {
-        List<String> input = null;
+        List<Long> input = null;
         try {
-            input = HttpsReader.getContent(new URL("someUrl"), "session=KEY");
+            input = HttpsReader.getContentAsLong(new URL("someUrl"), "session=Key");
         } catch (IOException e) {
             e.printStackTrace();
         }
         assert input != null;
-        int result = Day8.Part2.processInput(input);
+        int result = Day10.Part1.getJoltDifferencesCountMultiplied(input);
         out.println(result);
     }
 }
