@@ -28,12 +28,7 @@ public class TestAdvent {
                 "L.LLLLLL.L",
                 "L.LLLLL.LL");
 
-        List<String> test = Arrays.asList("F10",
-                "N3",
-                "F7",
-                "R90",
-                "F11");
-        int result = Day12.part1(input);
+        int result = Day12.part2(input);
         out.println(result);
     }
 }
