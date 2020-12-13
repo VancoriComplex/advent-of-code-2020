@@ -16,31 +16,43 @@ class NavigationComputer {
         directionIndicatorsMap.put('L', -1);
     }
 
-    int calculateManhattanDistance(Ship ship) {
-        return Math.abs(ship.getHorizontal()) + Math.abs(ship.getVertical());
+    int calculateManhattanDistance(SeaObject ship) {
+        return Math.abs(ship.getHorizontalPosition()) + Math.abs(ship.getVerticalPosition());
     }
 
-    void calculatePosition(Ship ship, Command command) {
+    void navigate(SeaObject ship, Command command) {
         switch (command.getAction()) {
             case 'F' -> {
-                ship.setHorizontal(ship.getHorizontal() + command.getValue()*ship.getDirectionHorizontal());
-                ship.setVertical(ship.getVertical() + command.getValue()*ship.getDirectionVertical());
+                moveVertical(ship, command.getValue(), ship.getDirectionVertical());
+                moveHorizontal(ship, command.getValue(), ship.getDirectionHorizontal());
             }
-            case 'N', 'S' -> ship.setVertical(ship.getVertical() + command.getValue()*directionIndicatorsMap.get(command.getAction()));
-            case 'E', 'W' -> ship.setHorizontal(ship.getHorizontal() + command.getValue()*directionIndicatorsMap.get(command.getAction()));
-            case 'L', 'R' -> ship.rotate(command.getValue()/90, directionIndicatorsMap.get(command.getAction()));
+            case 'N', 'S' -> moveVertical(ship, command.getValue(), directionIndicatorsMap.get(command.getAction()));
+            case 'E', 'W' -> moveHorizontal(ship, command.getValue(), directionIndicatorsMap.get(command.getAction()));
+            case 'L', 'R' -> rotate(ship, command);
         }
     }
 
-    void calculatePosition(Ship ship, Waypoint waypoint, Command command) {
+    void navigate(SeaObject ship, SeaObject waypoint, Command command) {
         switch (command.getAction()) {
             case 'F' -> {
-                ship.setHorizontal(ship.getHorizontal() + waypoint.getHorizontal()*command.getValue());
-                ship.setVertical((ship.getVertical()) + waypoint.getVertical()*command.getValue());
+                moveVertical(ship, command.getValue(), waypoint.getDirectionVertical());
+                moveHorizontal(ship, command.getValue(), waypoint.getDirectionHorizontal());
             }
-            case 'N', 'S' -> waypoint.setVertical(waypoint.getVertical() + command.getValue()*directionIndicatorsMap.get(command.getAction()));
-            case 'E', 'W' -> waypoint.setHorizontal(waypoint.getHorizontal() + command.getValue()*directionIndicatorsMap.get(command.getAction()));
-            case 'L', 'R' -> waypoint.rotate(command.getValue()/90, directionIndicatorsMap.get(command.getAction()));
+            case 'N', 'S' -> moveVertical(waypoint, command.getValue(), directionIndicatorsMap.get(command.getAction()));
+            case 'E', 'W' -> moveHorizontal(waypoint, command.getValue(), directionIndicatorsMap.get(command.getAction()));
+            case 'L', 'R' -> rotate(waypoint, command);
         }
+    }
+
+    private void moveVertical(SeaObject seaObject, int offset, int directionValue) {
+        seaObject.setVerticalPosition(seaObject.getVerticalPosition() + offset*directionValue);
+    }
+
+    private void moveHorizontal(SeaObject seaObject, int offset, int directionValue) {
+        seaObject.setHorizontalPosition(seaObject.getHorizontalPosition() + offset*directionValue);
+    }
+
+    private void rotate(SeaObject seaObject, Command command) {
+        seaObject.rotate(command.getValue()/90, directionIndicatorsMap.get(command.getAction()));
     }
 }
