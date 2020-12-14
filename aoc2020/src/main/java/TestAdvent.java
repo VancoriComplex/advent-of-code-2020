@@ -1,4 +1,5 @@
 import day12.Day12;
+import day13.Day13;
 import util.HttpsReader;
 
 import java.io.IOException;
@@ -28,7 +29,9 @@ public class TestAdvent {
                 "L.LLLLLL.L",
                 "L.LLLLL.LL");
 
-        int result = Day12.part2(input);
+        List<String> test13 = Arrays.asList("939",
+                "7,13,x,x,59,x,31,19");
+        long result = Day13.part1(input);
         out.println(result);
     }
 }
