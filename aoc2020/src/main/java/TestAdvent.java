@@ -31,7 +31,7 @@ public class TestAdvent {
 
         List<String> test13 = Arrays.asList("939",
                 "7,13,x,x,59,x,31,19");
-        long result = Day13.part1(input);
+        long result = Day13.part2(test13);
         out.println(result);
     }
 }
