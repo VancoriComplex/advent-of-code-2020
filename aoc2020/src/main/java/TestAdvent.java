@@ -1,4 +1,4 @@
-import day15.Day15;
+import day14.Day14;
 import util.HttpsReader;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ public class TestAdvent {
             e.printStackTrace();
         }
         assert input != null;
-        List<String> testSeat = Arrays.asList("L.LL.LL.LL",
+        List<String> test11 = Arrays.asList("L.LL.LL.LL",
                 "LLLLLLL.LL",
                 "L.L.L..L..",
                 "LLLL.LL.LL",
@@ -31,7 +31,7 @@ public class TestAdvent {
         List<String> test13 = Arrays.asList("939",
                 "7,13,x,x,59,x,31,19");
         List<Integer> day15input = Arrays.asList(0, 1, 4, 13, 15, 12, 16);
-        long result = Day15.part12(day15input);
+        long result = Day14.part2(input);
         out.println(result);
     }
 }
