@@ -2,36 +2,36 @@ package day11;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 class Switcher {
 
-    void switchSeats(WaitingArea waitingArea, int occupiedAdjacentsLimit) {
-        Set<Seat> seatsToSwitch = new HashSet<>();
-        Set<Seat> adjacents;
+    boolean switchSeats(WaitingArea waitingArea, int maxOccupied) {
+        AtomicBoolean stateChanged = new AtomicBoolean(false);
+        Set<Seat> seatsToSwitch = getSeatsToSwitch(waitingArea, maxOccupied);
+        seatsToSwitch.forEach(seat -> {
+            seat.setOccupied(!seat.isOccupied());
+            stateChanged.set(true);
+        });
+        return stateChanged.get();
+    }
 
-        for (Seat seat : waitingArea.getSeats()) {
-            adjacents = waitingArea.getAdjacentsOf(seat, 1);
+    private Set<Seat> getSeatsToSwitch(WaitingArea waitingArea, int maxOccupied) {
+        Set<Seat> seatsToSwitch = new HashSet<>();
+        Set<Seat> neighbours;
+        for (Seat seat : waitingArea.getSeats().values()) {
+            neighbours = waitingArea.getNeighboursOf(seat, 1);
             if (!seat.isOccupied()
-                    && adjacents
-                    .stream()
+                    && neighbours.stream()
                     .noneMatch(Seat::isOccupied))
                 seatsToSwitch.add(seat);
 
             if (seat.isOccupied()
-                    && adjacents
-                    .stream()
+                    && neighbours.stream()
                     .filter(Seat::isOccupied)
-                    .count() > occupiedAdjacentsLimit)
+                    .count() > maxOccupied)
                 seatsToSwitch.add(seat);
         }
-
-        waitingArea.getSeats()
-                .stream()
-                .peek(seat -> {
-                    if (seatsToSwitch.contains(seat))
-                        seat.switchState();
-                })
-                .collect(Collectors.toSet());
+        return seatsToSwitch;
     }
 }

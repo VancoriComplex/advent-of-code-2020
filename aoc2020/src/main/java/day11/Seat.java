@@ -1,43 +1,38 @@
 package day11;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
-class Seat extends AreaPosition {
+class Seat {
 
-    private static final Map<Character, Boolean> stateOccupiedMap = new HashMap<>();
-    private static final Map<Character, Character> stateSwitchMap = new HashMap<>();
+    private boolean isOccupied;
+    private final Positioni positioni;
 
-    static {
-        stateOccupiedMap.put('L', false);
-        stateOccupiedMap.put('#', true);
-        stateSwitchMap.put('L', '#');
-        stateSwitchMap.put('#', 'L');
+    Seat(Positioni positioni) {
+        this.positioni = positioni;
     }
 
-    Seat(char state, int x, int y) {
-        super(state, x, y);
+    boolean isOccupied() {
+        return isOccupied;
+    }
+
+    void setOccupied(boolean isOccupied) {
+        this.isOccupied = isOccupied;
+    }
+
+    public Positioni getPositioni() {
+        return positioni;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Seat seat = (Seat) o;
+        return Objects.equals(positioni, seat.positioni);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.getState(), super.x, super.y);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        assert obj instanceof Seat;
-        return ((Seat) obj).getState() == super.getState()
-                && ((Seat) obj).x == super.x
-                && ((Seat) obj).y == super.y;
-    }
-
-    boolean isOccupied() {
-        return stateOccupiedMap.get(super.getState());
-    }
-
-    void switchState() {
-        super.setState(stateSwitchMap.get(super.getState()));
+        return Objects.hash(positioni);
     }
 }

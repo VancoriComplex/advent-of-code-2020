@@ -1,36 +1,50 @@
 package day11;
 
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 class WaitingArea {
 
-    private final Set<Seat> seats;
+    private static final Set<int[]> seatNeighbours;
 
-    WaitingArea(Set<AreaPosition> positions) {
-        seats = filterSeats(positions);
+    static {
+        seatNeighbours = new HashSet<>();
+        seatNeighbours.add(new int[] {0, 1});
+        seatNeighbours.add(new int[] {1, 1});
+        seatNeighbours.add(new int[] {1, 0});
+        seatNeighbours.add(new int[] {1, -1});
+        seatNeighbours.add(new int[] {0, -1});
+        seatNeighbours.add(new int[] {-1, -1});
+        seatNeighbours.add(new int[] {-1, 0});
+        seatNeighbours.add(new int[] {-1, 1});
     }
 
-    Set<Seat> getSeats() {
+    private final Map<Positioni, Seat> seats;
+
+    WaitingArea(Map<Positioni, Seat> seats) {
+        this.seats = seats;
+    }
+
+    Map<Positioni, Seat> getSeats() {
         return seats;
     }
 
-    Set<Seat> getAdjacentsOf(Seat seat, int scope) {
-        return seats.stream()
-                .filter(seat1 -> (Math.abs(seat.x - seat1.x) <= scope)
-                        && (Math.abs(seat.y - seat1.y) <= scope)
-                        && seat1 != seat)
-                .collect(Collectors.toSet());
-    }
-
     int getOccupiedSeatsCount() {
-        return (int) seats.stream().filter(Seat::isOccupied).count();
+        return (int) seats.values().stream().filter(Seat::isOccupied).count();
     }
 
-    private Set<Seat> filterSeats(Set<AreaPosition> positions) {
-        return positions.stream()
-                .filter(areaPosition -> areaPosition instanceof Seat)
-                .map(areaPosition -> (Seat) areaPosition)
-                .collect(Collectors.toSet());
+    Set<Seat> getNeighboursOf(Seat seat, int scope) {
+        Set<Seat> neighbours = new HashSet<>();
+        for (int[] neighbour : seatNeighbours) {
+            for (int s = 1; s <= scope; s++) {
+                int x = seat.getPositioni().x + neighbour[0]*s;
+                int y = seat.getPositioni().y + neighbour[1]*s;
+                Positioni potentialNeighbour = new Positioni(x, y);
+                if (seats.containsKey(potentialNeighbour))
+                    neighbours.add(seats.get(potentialNeighbour));
+            }
+        }
+        return neighbours;
     }
 }
