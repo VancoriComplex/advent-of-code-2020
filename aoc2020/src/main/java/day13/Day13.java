@@ -1,9 +1,6 @@
 package day13;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Day13 {
 
@@ -30,30 +27,29 @@ public class Day13 {
     }
 
     public static long part2(List<String> input) {
-        // this works well only with small inputs ;_;
-        Map<Integer, Long> buses = new HashMap<>();
-        String[] schedule = input.get(1).split(",");
+        List<long[]> buses = getBuses(input);
+        long lcm = buses.get(0)[1];
+        long t = 0;
+        for (int i = 1; i < buses.size(); i++) {
+            while (true) {
+                if ((t + buses.get(i)[0])%buses.get(i)[1] == 0) {
+                    lcm *= buses.get(i)[1];
+                    break;
+                }
+                t += lcm;
+            }
+        }
+        return t;
+    }
 
-        long earliestPossible = 0;
-        long latestBus = 0;
+    private static List<long[]> getBuses(List<String> input) {
+        String[] schedule = input.get(1).split(",");
+        List<long[]> buses = new ArrayList<>();
         for (int i = 0; i < schedule.length; i++) {
             if (schedule[i].equals("x"))
                 continue;
-            buses.put(i, Long.parseLong(schedule[i]));
-            latestBus = Math.max(buses.get(i), latestBus);
-            earliestPossible = Math.max(buses.get(i) - i, earliestPossible);
+            buses.add(new long[] {(long) i, Long.parseLong(schedule[i])});
         }
-
-        while (true) {
-            int busMatchCounter = 0;
-            for (Map.Entry<Integer, Long> busId : buses.entrySet()) {
-                if ((earliestPossible+busId.getKey())%busId.getValue() != 0)
-                    break;
-                busMatchCounter++;
-            }
-            if (busMatchCounter == buses.size())
-                return earliestPossible;
-            earliestPossible += latestBus;
-        }
+        return buses;
     }
 }
