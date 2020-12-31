@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Day21 {
 
-    public static int part1(List<String> input) {
+    public static int part1_part2(List<String> input) {
         Set<Food> foods = parseFoods(input);
 
         // *part1
@@ -16,19 +16,54 @@ public class Day21 {
             allergens.addAll(food.getAllergens());
         }
 
+        // *part2
+        // containers for matched ingredients and their allergens
+        Map<String, String> matched = new TreeMap<>();
+        String matchedAllergen = "";
+        String matchedIngredient = "";
+
         // *part1
-        // for each allergen(K) map its ingredients(V)
+        // for each allergen(K) map ingredients(V) that potentially contain those allergens
         // (each allergen is initialized with all ingredients
         // - those will be sieved out in the next step)
-        Map<String, Set<String>> allergenMap = new HashMap<>();
+        Map<String, Set<String>> possibleMatch = new HashMap<>();
         for (String allergen : allergens)
-            allergenMap.put(allergen, new HashSet<>(ingredients));
+            possibleMatch.put(allergen, new HashSet<>(ingredients));
         // iterate through each foods allergens
-        // and sieve out ingredients that occur every time
+        // and find those ingredients which occur every time
         // when food contains given allergen
         for (Food food : foods)
-            for (String allergen : food.getAllergens())
-                allergenMap.get(allergen).retainAll(food.getIngredients());
+            for (String allergen : food.getAllergens()) {
+                possibleMatch.get(allergen).retainAll(food.getIngredients());
+                // *part2
+                // collect first matched ingredient and its allergen
+                if (possibleMatch.get(allergen).size() == 1) {
+                    matchedAllergen = allergen;
+                    matchedIngredient = String.join("", possibleMatch.get(matchedAllergen));
+                    matched.put(matchedAllergen, matchedIngredient);
+                }
+            }
+
+        // *part 2
+        // match rest of the allergens
+        // by removing from their possible ingredients sets
+        // previously identified ingredients
+        // - starting from the first that we found in previous step
+        while (matched.keySet().size() != possibleMatch.keySet().size()) {
+            for (String allergen : possibleMatch.keySet()) {
+                if (!allergen.equals(matchedAllergen) && possibleMatch.get(allergen).size() > 1)
+                    possibleMatch.get(allergen).remove(matchedIngredient);
+            }
+            for (String allergen : possibleMatch.keySet()) {
+                if (possibleMatch.get(allergen).size() == 1 && !matched.containsKey(allergen)) {
+                    matchedAllergen = allergen;
+                    matchedIngredient = String.join("", possibleMatch.get(matchedAllergen));
+                    matched.put(matchedAllergen, matchedIngredient);
+                    break;
+                }
+            }
+        }
+        System.out.println(String.join(",", matched.values()));
 
         // *part1
         // now we can look through each foods ingredients
@@ -37,7 +72,7 @@ public class Day21 {
         int occurences = 0;
         for (Food food : foods) {
             for (String ingredient : food.getIngredients())
-                if (allergenMap
+                if (possibleMatch
                         .values()
                         .stream()
                         .noneMatch(allergenIngredients -> allergenIngredients.contains(ingredient)))
@@ -71,6 +106,4 @@ public class Day21 {
         }
         return result;
     }
-
-
 }

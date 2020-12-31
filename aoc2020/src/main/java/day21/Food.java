@@ -1,6 +1,5 @@
 package day21;
 
-import java.util.Objects;
 import java.util.Set;
 
 public class Food {
